@@ -1,6 +1,6 @@
 #ifndef DYNAMIC_ARRAY_H
 #define DYNAMIC_ARRAY_H
-
+#define MAX 10
 #include <stdbool.h>
 
 typedef int DATA;

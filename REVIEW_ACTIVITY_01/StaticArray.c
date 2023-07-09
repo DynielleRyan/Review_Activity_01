@@ -3,30 +3,102 @@
 #include <stdbool.h>
 #include "StaticArray.h"
 
-void initList(List *list);
+void initList(List *list) {
+    list->count = 0;
+}
 
-List newList();
+List newList() {
+    List list;
+    list.count = 0;
+    return list;
+}
 
-void displayList(List list);
+void displayList(List list) {
+    printf("List elements: ");
+    for (int i = 0; i < list.count; i++) {
+        printf("%d ", list.elems[i]);
+    }
+    printf("\n");
+}
 
-bool insertFront(List *list, DATA item);
+bool insertFront(List *list, DATA item) {
+    if (list->count >= MAX) {
+        return false;  
+    }
 
-bool insertRear(List *list, DATA item);
+ 
+    for (int i = list->count; i > 0; i--) {
+        list->elems[i] = list->elems[i - 1];
+    }
 
-bool insertSorted(List *list, DATA item);
+    list->elems[0] = item;
+    list->count++;
+    return true;
+}
 
-bool insertAt(List *list, DATA item, int loc);
+bool insertRear(List *list, DATA item) {
+    if (list->count >= MAX) {
+        return false;  
+    }
 
-bool searchItem(List list, DATA key);
+    list->elems[list->count] = item;
+    list->count++;
+    return true;
+}
 
-int getItem(List list, DATA key);
+bool insertSorted(List *list, DATA item) {
+    if (list->count >= MAX) {
+        return false;  
+    }
 
-bool deleteFront(List *list);
+    int i = list->count - 1;
+    while (i >= 0 && list->elems[i] > item) {
+        list->elems[i + 1] = list->elems[i];
+        i--;
+    }
 
-bool deleteRear(List *list);
+    list->elems[i + 1] = item;
+    list->count++;
+    return true;
+}
 
-int deleteAt(List *list, int loc);
+bool insertAt(List *list, DATA item, int loc) {
+    if (list->count >= MAX || loc < 0 || loc > list->count) {
+        return false;  
+    }
 
-bool deleteItem(List *list, DATA key);
+    
+    for (int i = list->count; i > loc; i--) {
+        list->elems[i] = list->elems[i - 1];
+    }
 
-int deleteAllItem(List *list, DATA key);
+    list->elems[loc] = item;
+    list->count++;
+    return true;
+}
+
+bool searchItem(List list, DATA key) {
+    for (int i = 0; i < list.count; i++) {
+        if (list.elems[i] == key) {
+            return true;  
+    }
+
+    return false;  
+}
+
+int getItem(List list, DATA key) {
+    for (int i = 0; i < list.count; i++) {
+        if (list.elems[i] == key) {
+            return i;  
+        }
+    }
+
+    return -1;  
+}
+
+bool deleteFront(List *list) {
+    if (list->count <= 0) {
+        return false;  
+    }
+
+    
